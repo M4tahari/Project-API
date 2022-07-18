@@ -1,0 +1,838 @@
+openapi: 3.0.0
+info:
+  title: Intern selection tool API
+  description: This is a demo API that can help the HR team in selecting interns with different qualifications and talents to different positions during their internship.
+  contact:
+    name: Tamas
+    email: tamasmt0154@gmail.com
+  version: 1.0.0
+  
+tags:
+  - name: user
+    description: user related sessions
+  - name: role
+    description: role related sessions
+  - name: project
+    description: project related sessions
+  - name: position
+    description: position related sessions
+  - name: candidate
+    description: candidate related sessions
+  - name: interview
+    description: interview related sessions
+    
+servers:
+  - url: https://demoAPI.com
+  - url: https://testSite.com
+  
+paths:
+#Administrator
+
+  /user:
+    description: user resource
+    
+    post:
+      tags:
+        - user
+      summary: user upload
+      description: add a user to the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      
+      responses:
+        201:
+          description: Succesful user upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        
+        400:
+          description: invalid user information!
+      
+    get:
+      tags:
+      - user
+      summary: user fetch
+      description: here you can fetch all users from the database
+      parameters:
+        - in: query
+          name: userID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 1
+      
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        404:
+          description: failed to found users!
+          
+        500: 
+          description: Something went wrong!
+          
+  /user/{userID}:
+    get:
+      tags:
+        - user
+      summary: search by userID
+      description: fetches a user
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        
+        400:
+          description: Unable to find user!
+       
+    put:
+      tags:
+        - user
+      summary: updates user
+      description: updates a user
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          schema:
+            $ref: '#/components/schemas/user'
+          
+      responses:
+        501:
+          description: Something went wrong!
+    
+    delete:
+      tags:
+        - user
+      summary: deletes user
+      description: deletes a user
+      parameters:
+        - in: path
+          name: userID
+          required: true
+          schema:
+            $ref: '#/components/schemas/user'
+        
+        
+      responses:
+        500:
+          description: Something went wrong!
+      
+  /role:
+    description: role resource
+    
+    post:
+      tags:
+        - role
+      summary: role upload
+      description: adds a role to the database, that users can have
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/role'
+            
+      responses:
+        200:
+          description: Succesful role upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/roles'
+                
+        501: 
+          description: Something went wrong :(
+            
+    get:
+      tags:
+        - role
+      summary: role fetch
+      description: fetches the roles from the database
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+            example: Sourcer
+      
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/roles'
+        404:
+          description: failed to found role!
+          
+  /role/{name}:
+    get:
+      tags:
+        - role
+      description: fetches a role
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/role'
+        
+        400:
+          description: Something went wrong!
+       
+    put:
+      tags:
+        - role
+      description: updates a role
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            $ref: '#/components/schemas/role'
+          
+      responses:
+        401:
+          description: Something went wrong!
+    
+    delete:
+      tags:
+        - role
+      description: deletes a role
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            $ref: '#/components/schemas/role'
+        
+      responses:
+        400:
+          description: Something went wrong!
+          
+  /project:
+    description: user resource
+    
+    post:
+      tags:
+        - project
+      summary: project upload
+      description: add a project to the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/project'
+      
+      responses:
+        201:
+          description: Succesful project upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projects'
+        
+        500:
+          description: Something went wrong :(
+    get:
+      tags:
+      - project
+      summary: project fetch by name
+      description: here you can fetch any project from the database
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+            example: Spring boot project
+      
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projects'
+        404:
+          description: failed to found project!
+          
+  /project/{name}:
+    get:
+      tags:
+        - project
+      description: fetches a project
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/project'
+        
+        400:
+          description: Something went wrong!
+       
+    put:
+      tags:
+        - project
+      description: updates a project
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            $ref: '#/components/schemas/project'
+          
+      responses:
+        401:
+          description: Something went wrong!
+    
+    delete:
+      tags:
+        - project
+      description: deletes a project  
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            $ref: '#/components/schemas/project'
+        
+      responses:
+        400:
+          description: Something went wrong!
+          
+#Recruiter
+
+  /position:
+    description: position resource
+    
+    post:
+      tags:
+        - position
+      summary: position upload
+      description: adds an empty position to the database, that can be occupied by the new interns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      
+      responses:
+        202:
+          description: Succesful position upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+        
+        501:
+          description: Something went wrong :(
+      
+    get:
+      tags:
+        - position
+      summary: position fetch
+      description: here you can fetch any position from the database
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+      
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/positions'
+        404:
+          description: failed to found position!
+          
+  /position/{name}:
+    get:
+      tags:
+        - position
+      summary: position fetch by name
+      description: fetches positions
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/position'
+        
+        500:
+          description: Something went wrong!
+          
+    put:
+      tags:
+        - position
+      summary: position update
+      description: updates a position
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          $ref: '#/components/schemas/position'
+          
+      responses:
+        400:
+          description: Invalid position supplied
+        501:
+          description: Something went wrong!
+    
+    delete:
+      tags:
+        - position
+      summary: position delete
+      description: deletes a positon, or closes it
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          $ref: '#/components/schemas/position'
+        
+        
+      responses:
+        500:
+          description: Something went wrong!
+
+#Sourcer
+
+  /candidate:
+    description: candidate resource
+    
+    post:
+      tags:
+        - candidate
+      summary: candidate upload
+      description: adds a candidate to the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/candidate'
+      
+      responses:
+        202:
+          description: Succesful position upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/candidates'
+        
+        501:
+          description: Something went wrong :(
+    
+    get:
+      tags:
+        - candidate
+      summary: candidate fetch
+      description: request and receives candidate information
+      parameters:
+        - in: query
+          name: candidateID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            example: 13
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/candidates'
+        
+        500:
+          description: Something went wrong!
+          
+  /interview:
+    description: interview resource
+    
+    post:
+      tags:
+        - interview
+      summary: interview upload
+      description: schedules an interview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/interview'
+      
+      responses:
+        200:
+          description: Succesful interview upload!
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/interviews'
+        
+        502:
+          description: Something went wrong :(
+    
+    get:
+      tags:
+        - interview
+      summary: interview fetch
+      description: fetches interviews
+      parameters:
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/interviews'
+        
+        500:
+          description: Something went wrong!
+          
+#Project manager
+
+  /candidatesFromSourcer/{candidateID}:
+    description: The Project manager can receive candidate CVs from the Sourcer
+    
+    get:
+      tags:
+        - candidate
+      summary: search by candidateID
+      description: request and receives candidate information
+      parameters:
+        - in: path
+          name: candidateID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/candidate'
+        
+        404:
+          description: Unable to find candidates!
+          
+    delete:
+      tags:
+        - candidate
+      summary: candidate delete
+      description: deletes a candidate
+      parameters:
+        - in: path
+          name: candidateID
+          required: true
+          schema:
+            $ref: '#/components/schemas/position'
+        
+        
+      responses:
+        500:
+          description: Something went wrong!
+          
+  /assignCandidateToProject/{candidateID}:
+    put:
+      tags:
+        - candidate
+      summary: assigns candidate to new project
+      description: approves and assigns candidate for a project
+      parameters:
+      - in: path
+        name: candidateID
+        required: true
+        schema:
+          $ref: '#/components/schemas/candidate'
+          
+      responses:
+        400:
+          description: Invalid candidates supplied
+        501:
+          description: Something went wrong!
+          
+#Technical/Management interviewer
+  
+  /getInterview/{name}:
+    get:
+      tags:
+        - interview
+      summary: search by interview name
+      description: fetches interviews
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+            
+      responses:
+        200:
+          description: Succesful fetch!
+          content:
+            applicaton/json:
+              schema:
+                $ref: '#/components/schemas/interview'
+        
+        500:
+          description: Something went wrong!
+          
+  /approveCandidates/{approvedCandidates}:
+    put:
+      tags:
+        - interview
+      description: approves candidate/candidates for the HR interview
+      parameters:
+      - in: path
+        name: approvedCandidates
+        required: true
+        schema:
+          $ref: '#/components/schemas/interview'
+          
+      responses:
+        400:
+          description: Invalid candidates supplied
+        500:
+          description: Something went wrong!
+    
+components:
+  schemas:
+  
+    user:
+      type: object
+      properties: 
+      
+        userID:
+          type: integer
+          format: int64
+          example: 1
+          maxLength: 5
+          
+        username:
+          type: string
+          example: firstUser
+          maxLength: 32
+          
+        firstName:
+          type: string
+          example: Bob
+          maxLength: 32
+          
+        lastName:
+          type: string
+          example: Smith
+          maxLength: 32
+        
+        password:
+          type: string
+          example: "12345678"
+          maxLength: 40
+          
+        email:
+          type: string
+          example: example_mail@gmail.com
+          maxLength: 40
+          
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/role'
+            
+        assignedProjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/project'
+            
+    users:
+      type: array
+      items:
+        $ref: '#/components/schemas/user'
+          
+    role:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          enum:
+           - "Administrator"
+           - "Recruiter"
+           - "Sourcer"
+           - "Project manager"
+           - "Technical interviewer"
+           - "Management interviewer"
+           - "noRole"
+          default: "noRole"
+          
+    roles:
+      type: array
+      items:
+        $ref: '#/components/schemas/role'
+        
+    project:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 60
+        deadline:
+          type: string
+          example: "2022-12-24"
+        projectManagerID:
+          type: integer
+          example: 1
+          
+    projects:
+      type: array
+      items:
+        $ref: '#/components/schemas/project'
+        
+    position:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Backend developer
+        jobDescription:
+          type: string
+        requirements:
+          type: array
+          items:
+            type: string
+        selected interns:
+          type: array
+          items:
+            $ref: '#/components/schemas/candidate'
+            
+    positions:
+      type: array
+      items:
+        $ref: '#/components/schemas/position'
+        
+    candidate:
+      type: object
+      properties:
+        candidateID:
+          type: integer
+          example: 0
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Baker
+        email:
+          type: string
+          example: example_mail@gmail.com
+          maxLength: 40
+        assignedProjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/project'
+        qualifications:
+          type: array
+          items:
+            type: string
+            
+    candidates:
+      type: array
+      items:
+        $ref: '#/components/schemas/candidate'
+          
+    interview:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Frontend developer interview
+        type:
+          type: string
+          enum:
+            - "Technical interview"
+            - "Management interview"
+          default: "Technical interview"
+        dateTime: 
+          type: string
+          example: "2022-4-10T14:00:00"
+        interviewers:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+        project:
+          $ref: '#/components/schemas/project'
+        projectManager:
+          $ref: '#/components/schemas/user'
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/candidate'
+        approvedCandidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/candidate'
+            
+    interviews:
+      type: array
+      items:
+        $ref: '#/components/schemas/interview'
+      
